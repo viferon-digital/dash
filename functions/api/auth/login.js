@@ -42,6 +42,7 @@ export async function onRequestPost(context) {
   try {
     user = findUser(await loadUsers(env), email);
   } catch (err) {
+           console.error('SHEET_READ_FAIL ' + message(err));
     return json({ ok: false, error: 'Список доступа недоступен: ' + message(err) }, 502);
   }
 
