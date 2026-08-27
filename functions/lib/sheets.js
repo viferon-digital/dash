@@ -149,7 +149,8 @@ async function accessToken(env) {
  * приходит как литеральные «\n» — разворачиваем оба варианта.
  */
 async function importPrivateKey(pem) {
-  const body = String(pem)
+  const raw = String(pem).trim();
+  const body = String(raw.charCodeAt(0) === 123 ? JSON.parse(raw).private_key : raw)
     .replace(/\\n/g, '\n')
     .replace(/-----BEGIN [^-]+-----/, '')
     .replace(/-----END [^-]+-----/, '')
