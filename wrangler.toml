@@ -7,13 +7,14 @@ pages_build_output_dir = "public"
 # аккаунта) задаются в Cloudflare Pages → Settings → Variables and Secrets и
 # сюда не попадают. Локально их удобно держать в .dev.vars (он в .gitignore).
 [vars]
-SHEET_ID = ""
+SHEET_ID = "1tqVSdoyyLv319I_SHiC_Mt8uhebxikKC1Aj1XYIZViA"
 PROJECTS_SHEET = "Проекты"
 CACHE_TTL = "300"
 
 # Вход. sheet — по списку доступа из Google Таблицы, off — сайт открыт всем
 # (только для локальной разработки).
 AUTH_MODE = "sheet"
+ACCESS_SHEET_ID = "17z5rRON5sdf76TRpp82KiRF4ro8XF2fjKJMbfXci5qk"
 ACCESS_SHEET = "Доступ"
 ACCESS_TTL = "60"
 SESSION_TTL_HOURS = "12"
