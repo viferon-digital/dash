@@ -15,7 +15,7 @@
 import { readSheet, mapRows, b64urlBytes, fromB64url } from './sheets.js';
 import { timingSafeEqual } from './session.js';
 
-const DEFAULT_ITERATIONS = 210000;
+const DEFAULT_ITERATIONS = 100000;
 const DEFAULT_TTL = 60;
 
 const SCHEMA = {
@@ -140,7 +140,7 @@ async function pbkdf2(password, salt, iterations) {
 function clampIterations(value) {
   const parsed = Number(value);
   if (!Number.isFinite(parsed)) return DEFAULT_ITERATIONS;
-  return Math.min(Math.max(Math.trunc(parsed), 10000), 1000000);
+  return Math.min(Math.max(Math.trunc(parsed), 10000), 100000);
 }
 
 function constantEqualText(a, b) {
