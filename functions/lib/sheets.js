@@ -153,7 +153,7 @@ async function importPrivateKey(pem) {
     .replace(/\\n/g, '\n')
     .replace(/-----BEGIN [^-]+-----/, '')
     .replace(/-----END [^-]+-----/, '')
-    .replace(/\s+/g, '');
+    .replace(/[^A-Za-z0-9+/=]/g, '');
   const der = Uint8Array.from(atob(body), (ch) => ch.charCodeAt(0));
   return crypto.subtle.importKey(
     'pkcs8',
