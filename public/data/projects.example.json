@@ -1,0 +1,38 @@
+{
+  "_": "Пример снапшота. Той же формы объекты лежат в листе «Проекты» Google Таблицы — колонка на поле. Скопируйте нужные строки в projects.json, если хотите вести каталог прямо в репозитории, без таблицы.",
+  "fetchedAt": "2026-08-27T09:00:00.000Z",
+  "projects": [
+    {
+      "slug": "reviews",
+      "title": "Отзывы о Виферон",
+      "description": "Отзывы на карточках товара: по площадкам, по формам выпуска, покрытие и таблица со всеми ссылками.",
+      "url": "https://reviews.viferon.digital",
+      "category": "Маркетинг",
+      "icon": "💬",
+      "status": "работает",
+      "order": 1,
+      "access": "все",
+      "tags": "отзывы, аптеки, маркетплейсы",
+      "owner": "",
+      "repo": "https://github.com/vitalijgrom/Protect-1",
+      "embed": "да",
+      "updated": "2026-08-01"
+    },
+    {
+      "slug": "uptime",
+      "title": "Мониторинг доступности",
+      "description": "Сайты и почтовые узлы: состояние сейчас, надёжность за период, причины отказов и календарь аварий.",
+      "url": "https://uptime.viferon.digital",
+      "category": "Инфраструктура",
+      "icon": "🛰️",
+      "status": "работает",
+      "order": 2,
+      "access": "admin",
+      "tags": "uptime, ssl, почта",
+      "owner": "",
+      "repo": "https://github.com/vitalijgrom/project-3",
+      "embed": "да",
+      "updated": "2026-08-01"
+    }
+  ]
+}

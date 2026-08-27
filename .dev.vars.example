@@ -1,0 +1,21 @@
+# Локальные переменные для `npm run dev`. Скопируйте в .dev.vars (он в .gitignore).
+
+# Реестр проектов: таблица с доступом «по ссылке — читатель».
+SHEET_ID=
+
+# Подпись куки сессии. Любая длинная случайная строка, например:
+#   node -e "console.log(crypto.randomBytes(32).toString('base64url'))"
+SESSION_SECRET=
+
+# Вход. Для разработки без таблицы доступа можно поставить off.
+AUTH_MODE=sheet
+
+# Отдельная закрытая таблица со списком доступа (если не задана — берётся SHEET_ID).
+# ACCESS_SHEET_ID=
+
+# Кнопка «Войти через Google»: id OAuth-клиента (тип «Веб-приложение»).
+# GOOGLE_CLIENT_ID=
+
+# Сервисный аккаунт для чтения закрытой таблицы доступа.
+# GOOGLE_SA_EMAIL=dash-reader@project.iam.gserviceaccount.com
+# GOOGLE_SA_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"

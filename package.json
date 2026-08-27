@@ -1,0 +1,16 @@
+{
+  "name": "viferon-dash",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Главная страница viferon.digital: каталог дашбордов из Google Таблицы, вход по списку доступа из той же таблицы",
+  "scripts": {
+    "dev": "wrangler pages dev public",
+    "deploy": "wrangler pages deploy public",
+    "snapshot": "node scripts/snapshot.mjs",
+    "hash": "node scripts/hash-password.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^3.114.17"
+  }
+}

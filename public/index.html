@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Дашборды Viferon</title>
+<meta name="description" content="Каталог рабочих дашбордов: мониторинг, отзывы, маркетинг. Список проектов ведётся в Google Таблице.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<link rel="stylesheet" href="/assets/styles.css">
+<!-- Тема применяется до первой отрисовки, чтобы не было вспышки светлого фона. -->
+<script src="/assets/theme.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#content">Перейти к содержимому</a>
+
+<header class="topbar">
+  <div class="topbar__title">
+    <h1>Дашборды Viferon</h1>
+    <p class="topbar__sub">Всё, что считается по нашим данным, — в одном месте. Список ведётся в Google Таблице и обновляется сам.</p>
+  </div>
+  <div class="topbar__actions">
+    <span class="status" id="status" role="status" aria-live="polite">Загрузка…</span>
+    <button class="btn" id="refresh" type="button" title="Перечитать список проектов из Google Таблицы">
+      <span aria-hidden="true">⟳</span> Обновить
+    </button>
+    <button class="btn btn--icon" id="theme" type="button" aria-label="Переключить тему">
+      <span aria-hidden="true">◐</span>
+    </button>
+    <span class="user" id="user" hidden>
+      <span class="user__name" id="user-name"></span>
+      <span class="user__role" id="user-role"></span>
+      <button class="btn btn--icon" id="logout" type="button" title="Выйти" aria-label="Выйти">
+        <span aria-hidden="true">⏻</span>
+      </button>
+    </span>
+  </div>
+</header>
+
+<div class="banner" id="banner" hidden></div>
+
+<main id="content">
+
+  <section class="kpis" id="kpis" aria-label="Сводка по каталогу"></section>
+
+  <section class="filters" aria-label="Фильтры каталога">
+    <label class="field field--search">
+      <span class="field__label">Поиск</span>
+      <input type="search" id="f-search" placeholder="Название, описание, тег или адрес" autocomplete="off">
+    </label>
+    <label class="field">
+      <span class="field__label">Категория</span>
+      <select id="f-category"><option value="">Все</option></select>
+    </label>
+    <label class="field">
+      <span class="field__label">Статус</span>
+      <select id="f-status">
+        <option value="">Любой</option>
+        <option value="live">Работает</option>
+        <option value="dev">В разработке</option>
+        <option value="paused">Приостановлен</option>
+      </select>
+    </label>
+    <label class="check">
+      <input type="checkbox" id="f-pinned">
+      <span>Только закреплённые</span>
+    </label>
+  </section>
+
+  <div id="catalog"></div>
+
+</main>
+
+<footer class="foot">
+  <span id="foot-source">Источник данных: Google Таблица</span>
+  <span id="foot-updated"></span>
+  <span>Новый дашборд появляется здесь через минуту после строки в таблице — код трогать не нужно.</span>
+</footer>
+
+<!-- Просмотр дашборда, не уходя с главной. Открывается только для проектов,
+     у которых в таблице разрешено встраивание. -->
+<div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-labelledby="viewer-title">
+  <div class="viewer__bar">
+    <div class="viewer__title" id="viewer-title"><span></span></div>
+    <div class="viewer__actions">
+      <a class="btn" id="viewer-open" href="#" target="_blank" rel="noopener">Открыть в новой вкладке</a>
+      <button class="btn" id="viewer-close" type="button">Закрыть</button>
+    </div>
+  </div>
+  <iframe id="viewer-frame" title="Дашборд" referrerpolicy="no-referrer"></iframe>
+</div>
+
+<script src="/assets/app.js"></script>
+</body>
+</html>

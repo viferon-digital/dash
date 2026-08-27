@@ -1,0 +1,19 @@
+name = "viferon-dash"
+compatibility_date = "2025-07-18"
+pages_build_output_dir = "public"
+
+# Публичные значения: реестр проектов лежит в таблице, открытой «по ссылке —
+# читатель», поэтому его id не секрет. Секреты (SESSION_SECRET, ключ сервисного
+# аккаунта) задаются в Cloudflare Pages → Settings → Variables and Secrets и
+# сюда не попадают. Локально их удобно держать в .dev.vars (он в .gitignore).
+[vars]
+SHEET_ID = ""
+PROJECTS_SHEET = "Проекты"
+CACHE_TTL = "300"
+
+# Вход. sheet — по списку доступа из Google Таблицы, off — сайт открыт всем
+# (только для локальной разработки).
+AUTH_MODE = "sheet"
+ACCESS_SHEET = "Доступ"
+ACCESS_TTL = "60"
+SESSION_TTL_HOURS = "12"

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ru" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Вход — Дашборды Viferon</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<link rel="stylesheet" href="/assets/styles.css">
+<script src="/assets/theme.js"></script>
+</head>
+<body>
+
+<main class="login">
+  <div class="login__card">
+    <div class="login__brand">
+      <span aria-hidden="true">📊</span>
+      <h1>Дашборды Viferon</h1>
+    </div>
+    <p class="login__sub">Внутренний каталог. Доступ выдаётся по списку — если вас в нём нет, попросите добавить.</p>
+
+    <p class="login__error" id="error" role="alert" hidden></p>
+
+    <form id="form" autocomplete="on">
+      <label class="field">
+        <span class="field__label">Почта</span>
+        <input type="email" id="email" name="email" autocomplete="username" required placeholder="you@viferon.digital">
+      </label>
+      <label class="field">
+        <span class="field__label">Пароль</span>
+        <input type="password" id="password" name="password" autocomplete="current-password" required>
+      </label>
+      <button class="btn btn--primary" id="submit" type="submit">Войти</button>
+    </form>
+
+    <div id="google-block" hidden>
+      <div class="login__or">или</div>
+      <div class="login__google" id="google"></div>
+    </div>
+
+    <p class="login__note">Вход по паролю и вход через Google ведут в один и тот же список доступа: Google подтверждает, кто вы, таблица — что вам открыто.</p>
+  </div>
+</main>
+
+<script src="/assets/login.js"></script>
+</body>
+</html>
