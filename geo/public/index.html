@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ru" data-theme="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>GEO-видимость: препараты в ответах языковых моделей</title>
+<meta name="description" content="Как языковые модели отвечают на запросы про противовирусные препараты: доля голоса, охват ответов, лояльность моделей и запросов, конкурентное соседство.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+<link rel="stylesheet" href="assets/styles.css">
+<script src="assets/theme.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#content">Перейти к содержимому</a>
+
+<header class="topbar">
+  <div class="topbar__title">
+    <h1>GEO-видимость</h1>
+    <p class="topbar__sub">Что языковые модели отвечают на запросы про противовирусные и кого называют по именам</p>
+  </div>
+  <div class="topbar__actions">
+    <span class="status" id="status" role="status" aria-live="polite">Загрузка данных…</span>
+    <button class="btn" id="refresh" type="button" title="Перечитать данные из Google Таблицы">
+      <span aria-hidden="true">⟳</span> Обновить
+    </button>
+    <button class="btn btn--icon" id="theme" type="button" aria-label="Переключить тему">
+      <span aria-hidden="true">◐</span>
+    </button>
+  </div>
+</header>
+
+<div class="banner" id="banner" hidden></div>
+
+<main id="content">
+
+  <!-- Препарат в фокусе задаёт, про кого считаются KPI и три карточки ниже. -->
+  <section class="focus" aria-label="Препарат в фокусе">
+    <label class="field">
+      <span class="field__label">Препарат в фокусе</span>
+      <select id="f-brand"></select>
+    </label>
+    <p class="focus__hint">
+      Выбор меняет KPI, «Где нас не находят», «Конкурентное соседство» и динамику.
+      Рейтинг и лояльность моделей показывают всех — фокусный выделен.
+    </p>
+  </section>
+
+  <section class="kpis" id="kpis" aria-label="Сводка"></section>
+
+  <!-- Фильтры пересчитывают всё, что ниже: и KPI, и карточки, и таблицу. -->
+  <section class="filters" aria-label="Фильтры">
+    <label class="field">
+      <span class="field__label">Период с</span>
+      <select id="f-from"></select>
+    </label>
+    <label class="field">
+      <span class="field__label">по</span>
+      <select id="f-to"></select>
+    </label>
+    <label class="field">
+      <span class="field__label">Модель</span>
+      <select id="f-model"><option value="">Все</option></select>
+    </label>
+    <label class="field field--wide">
+      <span class="field__label">Запрос</span>
+      <select id="f-query"><option value="">Все</option></select>
+    </label>
+    <label class="check">
+      <input type="checkbox" id="f-hit">
+      <span>Только ответы с фокусным препаратом</span>
+    </label>
+  </section>
+
+  <div class="cards">
+
+    <section class="card" aria-labelledby="h-rank">
+      <div class="card__head">
+        <h2 id="h-rank">Рейтинг препаратов</h2>
+        <div class="toggle" role="group" aria-label="Метрика рейтинга">
+          <button type="button" id="m-share" aria-pressed="true">Доля голоса</button>
+          <button type="button" id="m-reach" aria-pressed="false">Охват ответов</button>
+        </div>
+      </div>
+      <p class="card__note" id="rank-note"></p>
+      <div class="bars" id="rank"></div>
+    </section>
+
+    <section class="card" aria-labelledby="h-neighbors">
+      <h2 id="h-neighbors">Конкурентное соседство</h2>
+      <p class="card__note" id="neighbors-note"></p>
+      <div class="bars" id="neighbors"></div>
+    </section>
+
+    <section class="card card--wide" aria-labelledby="h-queries">
+      <h2 id="h-queries">Где нас не находят</h2>
+      <p class="card__note" id="queries-note"></p>
+      <div class="bars bars--wrap" id="queries"></div>
+    </section>
+
+    <section class="card card--wide" aria-labelledby="h-models">
+      <h2 id="h-models">Лояльность моделей</h2>
+      <p class="card__note">
+        Какая доля всех упоминаний препаратов у модели приходится на каждый препарат.
+        Строка — модель, столбец — препарат; сумма строки — 100%.
+      </p>
+      <div class="heat" id="models"></div>
+      <div class="legend" id="models-legend"></div>
+    </section>
+
+    <section class="card card--wide" aria-labelledby="h-timeline">
+      <h2 id="h-timeline">Динамика по замерам</h2>
+      <p class="card__note" id="timeline-note"></p>
+      <div class="timeline" id="timeline"></div>
+    </section>
+
+    <section class="card card--wide" aria-labelledby="h-table">
+      <div class="card__head">
+        <h2 id="h-table">Ответы моделей</h2>
+        <button class="btn" id="csv" type="button">Выгрузить CSV</button>
+      </div>
+      <p class="card__note" id="table-note"></p>
+      <div class="table-wrap">
+        <table class="data" id="table">
+          <thead>
+            <tr>
+              <th>Дата</th><th>Модель</th><th>Запрос</th><th>Упомянуты</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <p class="card__note" id="table-more"></p>
+    </section>
+
+  </div>
+</main>
+
+<footer class="foot">
+  <span id="foot-source">Источник: Google Таблица, лист «Data»</span>
+  <span id="foot-updated"></span>
+  <span>Метрики считаются по методике из листа «Пояснения».</span>
+</footer>
+
+<div class="tip" id="tip" hidden role="tooltip"></div>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal__box">
+    <div class="modal__head">
+      <div class="modal__title" id="modal-title"></div>
+      <button class="btn" id="modal-close" type="button">Закрыть</button>
+    </div>
+    <div class="modal__body" id="modal-body"></div>
+  </div>
+</div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
