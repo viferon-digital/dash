@@ -11,6 +11,14 @@ import { b64url, b64urlBytes, fromB64url } from './sheets.js';
 
 export const COOKIE = 'vd_session';
 
+/**
+ * Кука выдаётся на весь домен, а не только на viferon.digital: соседние
+ * дашборды живут на поддоменах (ba, geo, social-pubmed и прочие) и проверяют
+ * эту же куку тем же секретом. Точка в начале — это и есть «весь домен вместе
+ * с поддоменами».
+ */
+const COOKIE_DOMAIN = '.viferon.digital';
+
 const DEFAULT_TTL_HOURS = 12;
 
 /** Пакует полезную нагрузку в `payload.signature`. */
@@ -48,6 +56,7 @@ export async function verify(env, token) {
 export function cookieHeader(token, maxAgeSeconds) {
   return [
     COOKIE + '=' + token,
+    'Domain=' + COOKIE_DOMAIN,
     'Path=/',
     'HttpOnly',
     'Secure',
@@ -57,17 +66,28 @@ export function cookieHeader(token, maxAgeSeconds) {
 }
 
 export function clearedCookie() {
-  return COOKIE + '=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0';
+  return COOKIE + '=; Domain=' + COOKIE_DOMAIN + '; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0';
 }
 
 export function readCookie(request, name = COOKIE) {
+  return readCookies(request, name)[0] || null;
+}
+
+/**
+ * Все куки с этим именем. Их может оказаться несколько: старая, выданная
+ * когда-то только на viferon.digital, и новая — на весь домен. Браузер шлёт
+ * обе и не говорит, какая откуда, а разбирать нужно обе: иначе просроченная
+ * старая перекроет живую новую, и человек будет ходить по кругу через вход.
+ */
+export function readCookies(request, name = COOKIE) {
+  const out = [];
   const raw = request.headers.get('cookie') || '';
   for (const part of raw.split(';')) {
     const eq = part.indexOf('=');
     if (eq === -1) continue;
-    if (part.slice(0, eq).trim() === name) return part.slice(eq + 1).trim();
+    if (part.slice(0, eq).trim() === name) out.push(part.slice(eq + 1).trim());
   }
-  return null;
+  return out;
 }
 
 export function ttlSeconds(env) {
@@ -78,7 +98,11 @@ export function ttlSeconds(env) {
 
 /** Текущий пользователь запроса или null. */
 export async function currentUser(request, env) {
-  return verify(env, readCookie(request));
+  for (const token of readCookies(request)) {
+    const payload = await verify(env, token);
+    if (payload) return payload;
+  }
+  return null;
 }
 
 /* --- Внутреннее ------------------------------------------------------------ */
