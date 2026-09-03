@@ -66,10 +66,34 @@ async function serveLogin(context) {
 
   if (String(env.AUTH_MODE || 'sheet') !== 'off') {
     const session = await currentUser(request, env).catch(() => null);
-    if (session) return Response.redirect(new URL('/', request.url).toString(), 302);
+    if (session) return Response.redirect(safeNext(request), 302);
   }
 
   return next();
+}
+
+/**
+ * Куда отправить того, кто уже вошёл, а всё равно попал на страницу входа.
+ * Обычно на каталог, но если его прислал соседний дашборд («?next=https://
+ * ba.viferon.digital/…»), возвращаем туда — иначе человек ходит по кругу.
+ * Чужие адреса не принимаем: открытый редирект — это подарок фишингу.
+ */
+function safeNext(request) {
+  const here = new URL(request.url);
+  const raw = here.searchParams.get('next') || '/';
+  const home = new URL('/', here).toString();
+
+  if (raw.startsWith('/') && !raw.startsWith('//')) return new URL(raw, here).toString();
+
+  try {
+    const target = new URL(raw);
+    const base = here.hostname.split('.').slice(-2).join('.');
+    const ours = target.hostname === base || target.hostname.endsWith('.' + base);
+    if (target.protocol === 'https:' && ours) return target.toString();
+  } catch {
+    // не адрес — значит, на каталог
+  }
+  return home;
 }
 
 function isPublic(path) {
