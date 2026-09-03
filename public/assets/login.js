@@ -113,10 +113,25 @@ async function onGoogleCredential(response) {
 
 /* --- Мелочи ---------------------------------------------------------------- */
 
-/** Возврат только на свой же путь: «?next=//чужой.сайт» никуда не уведёт. */
+/**
+ * Куда вернуть человека после входа. Свой путь — как был. Полный адрес
+ * принимается, только если это viferon.digital или его поддомен по https:
+ * дашборды живут на поддоменах и уводят сюда с «?next=https://ba.viferon…».
+ * Всё остальное — на главную: «?next=//чужой.сайт» никуда не уведёт.
+ */
 function safeNext(raw) {
   const value = String(raw || '/');
-  return value.startsWith('/') && !value.startsWith('//') ? value : '/';
+  if (value.startsWith('/') && !value.startsWith('//')) return value;
+
+  try {
+    const url = new URL(value);
+    const base = location.hostname.split('.').slice(-2).join('.');
+    const ours = url.hostname === base || url.hostname.endsWith('.' + base);
+    if (url.protocol === 'https:' && ours) return url.toString();
+  } catch {
+    // не адрес — значит, на главную
+  }
+  return '/';
 }
 
 function showError(err) {
