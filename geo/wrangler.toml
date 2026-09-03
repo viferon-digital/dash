@@ -9,3 +9,9 @@ pages_build_output_dir = "public"
 SHEET_ID = "1SNZk25KdIKaeughg1SBqKBmmhQKuwJ9Nl115ZNAkxR8"
 SHEET_NAME = "Data"
 CACHE_TTL = "900"
+
+# Вход. Дашборд закрыт: без куки сессии, выданной на viferon.digital, охранник
+# уводит на страницу входа. Секрет SESSION_SECRET задаётся в Cloudflare Pages →
+# Settings → Variables and Secrets и сюда, разумеется, не попадает.
+PROJECT_SLUG = "geo"
+AUTH_ORIGIN = "https://viferon.digital"
